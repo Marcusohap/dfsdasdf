@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TL ÇEKİM EKRANI</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background-color: #000;
+      color: white;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background-color: #1f1f1f;
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      background-color: #444;
+      color: white;
+      border: 1px solid #555;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .error {
+      color: #f87171;
+      margin-bottom: 10px;
+    }
+
+    .warning {
+      color: #fbbf24;
+      font-weight: bold;
+      font-size: 0.95rem;
+      margin-bottom: 15px;
+    }
+
+    .success {
+      text-align: center;
+      color: #4ade80;
+      margin-bottom: 20px;
+    }
+
+    .full-btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #16a34a;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>TL ÇEKİM EKRANI</h1>
+
+    <div class="card" id="formCard">
+      <div class="warning">
+        ⚠️ Lütfen IBAN ve ad-soyad bilgilerinizi eksiksiz giriniz. Aksi takdirde ödeme yapılmaz ve TL Mining sorumlu tutulamaz.
+      </div>
+
+      <label>Çekmek İstediğiniz Tutar (TL)</label>
+      <input type="number" id="withdrawAmount" placeholder="Minimum 30000 TL" />
+
+      <label>Adınız Soyadınız</label>
+      <input type="text" id="fullname" placeholder="Ad Soyad" />
+
+      <label>IBAN Numaranız</label>
+      <input type="text" id="iban" placeholder="TR ile başlayacak şekilde giriniz" />
+
+      <div id="error" class="error"></div>
+
+      <button class="full-btn" onclick="submitWithdrawal()">Çekim Talebi Gönder</button>
+    </div>
+
+    <div class="card" id="successCard" style="display: none;">
+      <p class="success">✅ Çekim talebiniz alınmıştır.</p>
+      <a href="https://t.me/UsdtToMiningBot">
+        <button class="full-btn">Bota Geri Dön</button>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    function submitWithdrawal() {
+      const amount = parseInt(document.getElementById("withdrawAmount").value);
+      const fullname = document.getElementById("fullname").value.trim();
+      const iban = document.getElementById("iban").value.trim().toUpperCase();
+      const errorDiv = document.getElementById("error");
+
+      if (isNaN(amount) || amount < 30000) {
+        errorDiv.innerText = "Minimum çekim tutarı 30.000 TL'dir.";
+        return;
+      }
+
+      if (fullname === "") {
+        errorDiv.innerText = "Ad Soyad boş bırakılamaz.";
+        return;
+      }
+
+      if (!iban.startsWith("TR") || iban.length < 20) {
+        errorDiv.innerText = "Geçerli bir IBAN giriniz (TR ile başlamalı ve en az 20 karakter olmalı).";
+        return;
+      }
+
+      // Başarılı
+      errorDiv.innerText = "";
+      document.getElementById("formCard").style.display = "none";
+      document.getElementById("successCard").style.display = "block";
+    }
+  </script>
+</body>
+</html>
